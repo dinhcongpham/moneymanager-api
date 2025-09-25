@@ -36,7 +36,7 @@ public class ProfileService {
         profileEntity = profileRepository.save(profileEntity);
 
         // send activation email
-        String activationLink = activationURL + "/api/v1.0/activate?token=" + profileEntity.getActivationToken();
+        String activationLink = activationURL + "/api/v1.0/profile/activate?token=" + profileEntity.getActivationToken();
         String subject = "Activate your moneymanager account!";
         String body = "Click on the following link to activate your moneymanager account: " + activationLink;
 
