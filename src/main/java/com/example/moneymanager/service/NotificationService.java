@@ -40,8 +40,7 @@ public class NotificationService {
         log.info("Job completed: Sending Daily Income Expense Reminder");
     }
 
-    @Scheduled(cron = "0 * * * * *", zone = "Asia/Ho_Chi_Minh")
-//    @Scheduled(cron = "0 0 23 * * *", zone = "Asia/Ho_Chi_Minh")
+    @Scheduled(cron = "0 0 23 * * *", zone = "Asia/Ho_Chi_Minh")
     @Transactional(readOnly = true)
     public void sendDailyExpenseSumary() {
         log.info("Job Started: Sending Daily Expense Sumary");
