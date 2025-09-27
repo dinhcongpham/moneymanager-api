@@ -89,6 +89,12 @@ public class ProfileService {
     }
 
     public Map<String, Object> authenticateAndGenerateToken(AuthDto authDto) {
+        if (profileRepository.existsByEmail(authDto.getEmail())) {
+            if (!isAccountActivated(authDto.getEmail())) {
+                throw new BadRequestException("Account is not active, Please activate your account first!");
+            }
+        }
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword())
