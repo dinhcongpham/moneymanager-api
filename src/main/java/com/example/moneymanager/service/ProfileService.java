@@ -1,5 +1,7 @@
 package com.example.moneymanager.service;
 
+import com.example.moneymanager.common.BadRequestException;
+import com.example.moneymanager.common.UnauthorizedException;
 import com.example.moneymanager.dto.AuthDto;
 import com.example.moneymanager.dto.ProfileDto;
 import com.example.moneymanager.entity.ProfileEntity;
@@ -7,13 +9,17 @@ import com.example.moneymanager.repository.ProfileRepository;
 import com.example.moneymanager.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 import java.util.UUID;
@@ -31,6 +37,10 @@ public class ProfileService {
     private String activationURL;
 
     public ProfileDto registerProfile(ProfileDto profileDto) {
+        if (profileRepository.existsByEmail(profileDto.getEmail())) {
+            throw new BadRequestException("Email Already Exists");
+        }
+
         ProfileEntity profileEntity = toEntity(profileDto);
         profileEntity.setActivationToken(UUID.randomUUID().toString());
         profileEntity = profileRepository.save(profileEntity);
@@ -80,21 +90,24 @@ public class ProfileService {
 
     public Map<String, Object> authenticateAndGenerateToken(AuthDto authDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword())
+            );
 
-            //generate jwt token
             String token = jwtUtil.generateToken(authDto.getEmail());
             return Map.of(
                     "token", token,
                     "user", getPublicProfile(authDto.getEmail())
             );
+        } catch (BadCredentialsException e) {
+            throw new UnauthorizedException("Invalid email or password");
+        } catch (DisabledException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account is disabled");
         } catch (Exception e) {
-            return Map.of(
-                    "error", e.getMessage(),
-                    "cause", e.getCause()
-            );
+            throw new BadRequestException(e.getMessage());
         }
     }
+
 
     public ProfileEntity toEntity(ProfileDto profileDto) {
         return ProfileEntity.builder()
