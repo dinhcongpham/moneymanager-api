@@ -37,4 +37,10 @@ public class ProfileController {
         Map<String, Object> response = profileService.authenticateAndGenerateToken(authDto);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("public")
+    public ResponseEntity<ProfileDto> getPublicProfile() {
+        ProfileDto profileDto = profileService.getPublicProfile(null);
+        return ResponseEntity.ok(profileDto);
+    }
 }
