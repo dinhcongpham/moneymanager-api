@@ -1,4 +1,5 @@
 com\example\moneymanager\common\BadRequestException.class
+com\example\moneymanager\service\ExcelService.class
 com\example\moneymanager\common\ErrorDto.class
 com\example\moneymanager\dto\IncomeDto.class
 com\example\moneymanager\controller\CategoryController.class
@@ -39,9 +40,11 @@ com\example\moneymanager\service\AppUserDetailsService.class
 com\example\moneymanager\service\DashboardService.class
 com\example\moneymanager\dto\ExpenseDto.class
 com\example\moneymanager\service\CategoryService.class
+com\example\moneymanager\controller\ExcelController.class
 com\example\moneymanager\config\SecurityConfig.class
 com\example\moneymanager\repository\CategoryRepository.class
 com\example\moneymanager\dto\AuthDto.class
+com\example\moneymanager\controller\EmailController.class
 com\example\moneymanager\dto\RecentTransactionDto$RecentTransactionDtoBuilder.class
 com\example\moneymanager\dto\FilterDto$FilterDtoBuilder.class
 com\example\moneymanager\controller\IncomeController.class
