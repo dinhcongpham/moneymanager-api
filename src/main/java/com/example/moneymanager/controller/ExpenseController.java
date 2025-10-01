@@ -22,9 +22,15 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @GetMapping
+    @GetMapping("/month")
     public ResponseEntity<List<ExpenseDto>> getCurrentMonthExpense() {
         List<ExpenseDto> expenses = expenseService.getCurrentMonthExpense();
+        return ResponseEntity.status(HttpStatus.OK).body(expenses);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExpenseDto>> getAllExpense() {
+        List<ExpenseDto> expenses = expenseService.getAllExpense();
         return ResponseEntity.status(HttpStatus.OK).body(expenses);
     }
 

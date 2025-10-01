@@ -23,9 +23,15 @@ public class IncomeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @GetMapping
+    @GetMapping("/month")
     public ResponseEntity<List<IncomeDto>> getCurrentMonthIncome() {
         List<IncomeDto> expenses = incomeService.getCurrentMonthIncome();
+        return ResponseEntity.status(HttpStatus.OK).body(expenses);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<IncomeDto>> getAllIncome() {
+        List<IncomeDto> expenses = incomeService.getAllIncome();
         return ResponseEntity.status(HttpStatus.OK).body(expenses);
     }
 

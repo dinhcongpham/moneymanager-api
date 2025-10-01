@@ -34,6 +34,12 @@ public class ExpenseService {
         return toDto(newExpense);
     }
 
+    public List<ExpenseDto> getAllExpense() {
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<ExpenseEntity> expenses = expenseRepository.findByProfileIdOrderByDateDesc(profile.getId());
+        return expenses.stream().map(this::toDto).toList();
+    }
+
     public List<ExpenseDto> getCurrentMonthExpense() {
         ProfileEntity profile = profileService.getCurrentProfile();
         LocalDate now = LocalDate.now();

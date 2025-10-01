@@ -37,14 +37,20 @@ public class IncomeService {
         return toDto(newIncome);
     }
 
+    public List<IncomeDto> getAllIncome() {
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<IncomeEntity> incomes = incomeRepository.findByProfileIdOrderByDateDesc(profile.getId());
+        return incomes.stream().map(this::toDto).toList();
+    }
+
     public List<IncomeDto> getCurrentMonthIncome() {
         ProfileEntity profile = profileService.getCurrentProfile();
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.withDayOfMonth(1);
         LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
 
-        List<IncomeEntity> expenses = incomeRepository.findByProfileIdAndDateBetween(profile.getId(), startDate, endDate);
-        return expenses.stream().map(this::toDto).toList();
+        List<IncomeEntity> incomes = incomeRepository.findByProfileIdAndDateBetween(profile.getId(), startDate, endDate);
+        return incomes.stream().map(this::toDto).toList();
     }
 
     public void deleteIncomeById(Long id) {
