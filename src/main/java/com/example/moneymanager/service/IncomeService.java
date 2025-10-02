@@ -12,6 +12,8 @@ import com.example.moneymanager.repository.CategoryRepository;
 import com.example.moneymanager.repository.ExpenseRepository;
 import com.example.moneymanager.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,10 +78,10 @@ public class IncomeService {
         return totalExpense == null ? BigDecimal.ZERO : totalExpense;
     }
 
-    public List<IncomeDto> filterIncomes(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+    public Page<IncomeDto> filterIncomes(LocalDate startDate, LocalDate endDate, String keyword, Pageable pageable) {
         ProfileEntity profile = profileService.getCurrentProfile();
-        List<IncomeEntity> expenses = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, sort);
-        return expenses.stream().map(this::toDto).toList();
+        Page<IncomeEntity> incomes = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, pageable);
+        return incomes.map(this::toDto);
     }
 
     private IncomeEntity toEntity(IncomeDto incomeDto, ProfileEntity profileEntity, CategoryEntity categoryEntity) {

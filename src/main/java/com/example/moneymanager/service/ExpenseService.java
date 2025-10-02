@@ -10,6 +10,8 @@ import com.example.moneymanager.repository.CategoryRepository;
 import com.example.moneymanager.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -79,10 +81,10 @@ public class ExpenseService {
         return expenses.stream().map(this::toDto).toList();
     }
 
-    public List<ExpenseDto> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Sort sort) {
+    public Page<ExpenseDto> filterExpenses(LocalDate startDate, LocalDate endDate, String keyword, Pageable pageable) {
         ProfileEntity profile = profileService.getCurrentProfile();
-        List<ExpenseEntity> expenses = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, sort);
-        return expenses.stream().map(this::toDto).toList();
+        Page<ExpenseEntity> expenses = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, pageable);
+        return expenses.map(this::toDto);
     }
 
     private ExpenseEntity toEntity(ExpenseDto expenseDto, ProfileEntity profileEntity, CategoryEntity categoryEntity) {

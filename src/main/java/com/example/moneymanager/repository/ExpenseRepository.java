@@ -1,6 +1,8 @@
 package com.example.moneymanager.repository;
 
 import com.example.moneymanager.entity.ExpenseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,12 +20,12 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
     @Query("select sum(e.amount) from ExpenseEntity e where e.profile.id = :profileId")
     BigDecimal findTotalExpenseByProfileId(@Param("profileId") Long profileId);
 
-    List<ExpenseEntity> findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
+    Page<ExpenseEntity> findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(
             Long profileId,
             LocalDate startDate,
             LocalDate endDate,
             String name,
-            Sort sort
+            Pageable pageable
     );
 
     List<ExpenseEntity> findByProfileIdAndDateBetween(Long profileId, LocalDate startDate, LocalDate endDate);

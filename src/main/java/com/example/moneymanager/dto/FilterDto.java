@@ -17,4 +17,6 @@ public class FilterDto {
     private String keyword;
     private String sortField;
     private String sortOrder;
+    private Integer page;
+    private Integer pageSize;
 }
