@@ -2,6 +2,7 @@ package com.example.moneymanager.controller;
 
 import com.example.moneymanager.dto.AuthDto;
 import com.example.moneymanager.dto.ProfileDto;
+import com.example.moneymanager.dto.RefreshTokenRequest;
 import com.example.moneymanager.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,12 @@ public class ProfileController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody AuthDto authDto) {
         Map<String, Object> response = profileService.authenticateAndGenerateToken(authDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        Map<String, Object> response = profileService.authenticateRefreshToken(refreshTokenRequest.getRefreshToken());
         return ResponseEntity.ok(response);
     }
 

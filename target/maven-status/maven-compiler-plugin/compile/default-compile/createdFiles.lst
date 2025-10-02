@@ -18,6 +18,7 @@ com\example\moneymanager\dto\CategoryDto.class
 com\example\moneymanager\entity\CategoryEntity$CategoryEntityBuilder.class
 com\example\moneymanager\controller\ExpenseController.class
 com\example\moneymanager\controller\ProfileController.class
+com\example\moneymanager\dto\RefreshTokenRequest.class
 com\example\moneymanager\service\ExpenseService.class
 com\example\moneymanager\repository\ProfileRepository.class
 com\example\moneymanager\entity\ProfileEntity$ProfileEntityBuilder.class

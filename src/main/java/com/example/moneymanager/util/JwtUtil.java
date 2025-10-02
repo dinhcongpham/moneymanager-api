@@ -18,7 +18,10 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     @Value("${spring.jwt.accessTokenExpiration}")
-    private long JWT_EXPIRATION;
+    private long JWT_ACCESS_EXPIRATION;
+
+    @Value("${spring.jwt.refreshTokenExpiration}")
+    private long JWT_REFRESH_EXPIRATION;
 
     // 🔹 Extract username (email in your case)
     public String extractUsername(String token) {
@@ -37,9 +40,15 @@ public class JwtUtil {
     }
 
     // 🔹 Generate token with claims
-    public String generateToken(String username) {
+    public String generateAccessToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, username, JWT_ACCESS_EXPIRATION);
+    }
+
+    // 🔹 Generate token with claims
+    public String generateRefreshToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username, JWT_REFRESH_EXPIRATION);
     }
 
     // 🔹 Validate token
@@ -61,12 +70,12 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    private String createToken(Map<String, Object> claims, String subject, Long lifeTime) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)              // subject = email/username
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+                .setExpiration(new Date(System.currentTimeMillis() + lifeTime))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

@@ -100,13 +100,39 @@ public class ProfileService {
                     new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword())
             );
 
-            String token = jwtUtil.generateToken(authDto.getEmail());
+            String accessToken = jwtUtil.generateAccessToken(authDto.getEmail());
+            String refreshToken = jwtUtil.generateRefreshToken(authDto.getEmail());
             return Map.of(
-                    "token", token,
+                    "accessToken", accessToken,
+                    "refreshToken", refreshToken,
                     "user", getPublicProfile(authDto.getEmail())
             );
         } catch (BadCredentialsException e) {
             throw new UnauthorizedException("Invalid email or password");
+        } catch (DisabledException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account is disabled");
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public Map<String, Object> authenticateRefreshToken(String token) {
+        try {
+            String email = jwtUtil.extractUsername(token);
+
+            if (!profileRepository.existsByEmail(email)) {
+                throw new BadRequestException("Invalid refresh token");
+            }
+
+            String accessToken = jwtUtil.generateAccessToken(email);
+            String refreshToken = jwtUtil.generateRefreshToken(email);
+            return Map.of(
+                    "accessToken", accessToken,
+                    "refreshToken", refreshToken,
+                    "user", getPublicProfile(email)
+            );
+        } catch (BadCredentialsException e) {
+            throw new UnauthorizedException("Invalid refresh token");
         } catch (DisabledException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account is disabled");
         } catch (Exception e) {
