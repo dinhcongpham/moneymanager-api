@@ -3,14 +3,12 @@ package com.example.moneymanager.controller;
 import com.example.moneymanager.dto.ExpenseDto;
 import com.example.moneymanager.dto.FilterDto;
 import com.example.moneymanager.dto.IncomeDto;
+import com.example.moneymanager.dto.RecentTransactionDto;
 import com.example.moneymanager.service.ExpenseService;
 import com.example.moneymanager.service.IncomeService;
 import com.example.moneymanager.service.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -34,12 +34,12 @@ public class FilterController {
         LocalDate endDate = filterDto.getEndDate() != null ? filterDto.getEndDate() : LocalDate.now();
         String keyword = filterDto.getKeyword() != null ? filterDto.getKeyword() : "";
         String sortField = filterDto.getSortField() != null ? filterDto.getSortField() : "date";
-        Integer page =  filterDto.getPage() != null ? filterDto.getPage() : 0;
-        Integer pageSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 10;
+        Integer p =  filterDto.getPage() != null ? filterDto.getPage() : 0;
+        Integer pSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 10;
         Sort.Direction direction = "desc".equalsIgnoreCase(filterDto.getSortOrder()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, sortField);
 
-        Pageable pageable = PageRequest.of(page, pageSize, sort);
+        Pageable pageable = PageRequest.of(p, pSize, sort);
 
         if ("income".equals(filterDto.getType())) {
             Page<IncomeDto> incomes = incomeService.filterIncomes(startDate, endDate, keyword, pageable);
@@ -48,7 +48,60 @@ public class FilterController {
             Page<ExpenseDto> expense = expenseService.filterExpenses(startDate, endDate, keyword, pageable);
             return ResponseEntity.ok().body(expense);
         } else {
-            return ResponseEntity.badRequest().body("Invalid type. Must be 'income' or 'expense'");
+            // Fetch both income and expense data
+            Page<IncomeDto> incomePage = incomeService.filterIncomes(startDate, endDate, keyword, Pageable.unpaged());
+            Page<ExpenseDto> expensePage = expenseService.filterExpenses(startDate, endDate, keyword, Pageable.unpaged());
+
+            // Convert both to a common DTO (RecentTransactionDto)
+            List<RecentTransactionDto> combined = new ArrayList<>();
+
+            incomePage.getContent().forEach(i -> combined.add(
+                    RecentTransactionDto.builder()
+                            .id(i.getId())
+                            .profileId(null) // fill if needed
+                            .icon(i.getIcon())
+                            .name(i.getName())
+                            .amount(i.getAmount())
+                            .date(i.getDate())
+                            .createdAt(i.getCreatedAt())
+                            .updatedAt(i.getUpdatedAt())
+                            .type("income")
+                            .build()
+            ));
+
+            expensePage.getContent().forEach(e -> combined.add(
+                    RecentTransactionDto.builder()
+                            .id(e.getId())
+                            .profileId(null) // fill if needed
+                            .icon(e.getIcon())
+                            .name(e.getName())
+                            .amount(e.getAmount())
+                            .date(e.getDate())
+                            .createdAt(e.getCreatedAt())
+                            .updatedAt(e.getUpdatedAt())
+                            .type("expense")
+                            .build()
+            ));
+
+            // Sort combined list by date desc (and maybe createdAt for tie-breaking)
+            combined.sort(Comparator.comparing(RecentTransactionDto::getDate).reversed()
+                    .thenComparing(RecentTransactionDto::getCreatedAt).reversed());
+
+            // Now manually apply pagination
+            int page = filterDto.getPage() != null ? filterDto.getPage() : 0;
+            int pageSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 10;
+
+            int start = Math.min(page * pageSize, combined.size());
+            int end = Math.min(start + pageSize, combined.size());
+            List<RecentTransactionDto> pagedContent = combined.subList(start, end);
+
+            Page<RecentTransactionDto> resultPage = new PageImpl<>(
+                    pagedContent,
+                    PageRequest.of(page, pageSize, Sort.by("date").descending()),
+                    combined.size()
+            );
+
+            return ResponseEntity.ok(resultPage);
         }
     }
 }
