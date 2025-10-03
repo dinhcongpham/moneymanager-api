@@ -2,6 +2,7 @@ com\example\moneymanager\common\BadRequestException.class
 com\example\moneymanager\service\ExcelService.class
 com\example\moneymanager\common\ErrorDto.class
 com\example\moneymanager\dto\IncomeDto.class
+com\example\moneymanager\controller\OAuth2Controller.class
 com\example\moneymanager\controller\CategoryController.class
 com\example\moneymanager\service\IncomeService.class
 com\example\moneymanager\dto\ProfileDto$ProfileDtoBuilder.class
@@ -14,9 +15,11 @@ com\example\moneymanager\common\NotFoundException.class
 com\example\moneymanager\dto\ProfileDto.class
 com\example\moneymanager\controller\FilterController.class
 com\example\moneymanager\entity\IncomeEntity.class
+com\example\moneymanager\service\GoogleTokenVerifierService.class
 com\example\moneymanager\dto\CategoryDto.class
 com\example\moneymanager\entity\CategoryEntity$CategoryEntityBuilder.class
 com\example\moneymanager\controller\ExpenseController.class
+com\example\moneymanager\dto\GoogleUser.class
 com\example\moneymanager\controller\ProfileController.class
 com\example\moneymanager\dto\RefreshTokenRequest.class
 com\example\moneymanager\service\ExpenseService.class
@@ -27,6 +30,7 @@ com\example\moneymanager\repository\IncomeRepository.class
 com\example\moneymanager\MoneymanagerApplication.class
 com\example\moneymanager\dto\IncomeDto$IncomeDtoBuilder.class
 com\example\moneymanager\service\EmailService.class
+com\example\moneymanager\service\AuthService.class
 com\example\moneymanager\service\NotificationService.class
 com\example\moneymanager\dto\CategoryDto$CategoryDtoBuilder.class
 com\example\moneymanager\service\ProfileService.class

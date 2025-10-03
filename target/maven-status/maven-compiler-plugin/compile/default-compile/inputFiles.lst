@@ -11,11 +11,13 @@ E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\exampl
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\controller\ExpenseController.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\controller\FilterController.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\controller\IncomeController.java
+E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\controller\OAuth2Controller.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\controller\ProfileController.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\AuthDto.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\CategoryDto.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\ExpenseDto.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\FilterDto.java
+E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\GoogleUser.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\IncomeDto.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\ProfileDto.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\dto\RecentTransactionDto.java
@@ -31,11 +33,13 @@ E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\exampl
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\repository\ProfileRepository.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\security\JwtRequestFilter.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\AppUserDetailsService.java
+E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\AuthService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\CategoryService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\DashboardService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\EmailService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\ExcelService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\ExpenseService.java
+E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\GoogleTokenVerifierService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\IncomeService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\NotificationService.java
 E:\Intellij-Java-Projects\Tutorial_hell_pj\moneymanager\src\main\java\com\example\moneymanager\service\ProfileService.java

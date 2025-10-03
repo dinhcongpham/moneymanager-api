@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -83,21 +84,27 @@ public class FilterController {
                             .build()
             ));
 
-            // Sort combined list by date desc (and maybe createdAt for tie-breaking)
-            combined.sort(Comparator.comparing(RecentTransactionDto::getDate).reversed()
-                    .thenComparing(RecentTransactionDto::getCreatedAt).reversed());
+            // sort by date DESC, then createdAt DESC
+            combined.sort(
+                    Comparator.comparing(RecentTransactionDto::getDate,
+                                    Comparator.nullsLast(Comparator.reverseOrder()))
+                            .thenComparing(RecentTransactionDto::getCreatedAt,
+                                    Comparator.nullsLast(Comparator.reverseOrder()))
+            );
 
-            // Now manually apply pagination
             int page = filterDto.getPage() != null ? filterDto.getPage() : 0;
             int pageSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 10;
 
             int start = Math.min(page * pageSize, combined.size());
             int end = Math.min(start + pageSize, combined.size());
-            List<RecentTransactionDto> pagedContent = combined.subList(start, end);
+
+            List<RecentTransactionDto> pagedContent = start < end
+                    ? new ArrayList<>(combined.subList(start, end))
+                    : Collections.emptyList();
 
             Page<RecentTransactionDto> resultPage = new PageImpl<>(
                     pagedContent,
-                    PageRequest.of(page, pageSize, Sort.by("date").descending()),
+                    PageRequest.of(page, pageSize),
                     combined.size()
             );
 
