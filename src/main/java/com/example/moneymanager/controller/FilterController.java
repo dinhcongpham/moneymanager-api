@@ -36,7 +36,7 @@ public class FilterController {
         String keyword = filterDto.getKeyword() != null ? filterDto.getKeyword() : "";
         String sortField = filterDto.getSortField() != null ? filterDto.getSortField() : "date";
         Integer p =  filterDto.getPage() != null ? filterDto.getPage() : 0;
-        Integer pSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 10;
+        Integer pSize = filterDto.getPageSize() != null ? filterDto.getPageSize() : 6;
         Sort.Direction direction = "desc".equalsIgnoreCase(filterDto.getSortOrder()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, sortField);
 

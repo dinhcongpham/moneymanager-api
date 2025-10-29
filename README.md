@@ -1,4 +1,4 @@
-# 💰 Money Manager — <a href="https://money-manager-pdc.netlify.app" target="_blank">🔗 Link App</a> — BackEnd now is not work
+# 💰 Money Manager — <a href="https://money-manager-jp.netlify.app" target="_blank">🔗 Link App</a>
 
 A personal finance management web application that helps users track income and expenses, categorize transactions, and visualize their financial data with interactive charts.
 
